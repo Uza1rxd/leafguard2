@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View, TextInput, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -13,89 +14,95 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
     setIsLoading(true);
-    // TODO: Implement actual login logic
     try {
-      // Mock login success
-      setTimeout(() => {
-        setIsLoading(false);
-        // Replace the current screen with the tabs layout
-        router.replace('/(tabs)');
-      }, 1500);
+      // TODO: Implement actual login logic here
+      // Mock successful login
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Navigate to the home screen
+      router.replace('/(tabs)');
     } catch (error) {
-      setIsLoading(false);
-      // Handle login error
       Alert.alert('Error', 'Failed to login. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}
-    >
-      <LinearGradient
-        colors={['#4A6741', '#2D4D1E']}
-        style={styles.gradient}
+    <SafeAreaView style={styles.container}>
+      <KeyboardAvoidingView 
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.keyboardView}
       >
-        <View style={styles.header}>
-          <IconSymbol name="leaf.fill" size={60} color="#FFFFFF" />
-          <ThemedText style={styles.title}>Welcome Back</ThemedText>
-          <ThemedText style={styles.subtitle}>Sign in to continue</ThemedText>
-        </View>
-
-        <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <IconSymbol name="envelope.fill" size={20} color="#4A6741" />
-            <TextInput
-              style={styles.input}
-              placeholder="Email"
-              placeholderTextColor="#666"
-              value={email}
-              onChangeText={setEmail}
-              autoCapitalize="none"
-              keyboardType="email-address"
-            />
+        <LinearGradient
+          colors={['#4A6741', '#2D4D1E']}
+          style={styles.gradient}
+        >
+          <View style={styles.header}>
+            <IconSymbol name="leaf.fill" size={60} color="#FFFFFF" />
+            <ThemedText style={styles.title}>Welcome Back</ThemedText>
+            <ThemedText style={styles.subtitle}>Sign in to continue</ThemedText>
           </View>
 
-          <View style={styles.inputContainer}>
-            <IconSymbol name="lock.fill" size={20} color="#4A6741" />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              placeholderTextColor="#666"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-          </View>
+          <View style={styles.form}>
+            <View style={styles.inputContainer}>
+              <IconSymbol name="envelope.fill" size={20} color="#4A6741" />
+              <TextInput
+                style={styles.input}
+                placeholder="Email"
+                placeholderTextColor="#666"
+                value={email}
+                onChangeText={setEmail}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+            </View>
 
-          <TouchableOpacity 
-            onPress={() => router.push('/auth/forgot-password')}
-            style={styles.forgotPassword}
-          >
-            <ThemedText style={styles.forgotPasswordText}>Forgot Password?</ThemedText>
-          </TouchableOpacity>
+            <View style={styles.inputContainer}>
+              <IconSymbol name="lock.fill" size={20} color="#4A6741" />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                placeholderTextColor="#666"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry
+              />
+            </View>
 
-          <TouchableOpacity
-            style={[styles.button, isLoading && styles.buttonDisabled]}
-            onPress={handleLogin}
-            disabled={isLoading}
-          >
-            <ThemedText style={styles.buttonText}>
-              {isLoading ? 'Signing in...' : 'Sign In'}
-            </ThemedText>
-          </TouchableOpacity>
-
-          <View style={styles.footer}>
-            <ThemedText style={styles.footerText}>Don't have an account? </ThemedText>
-            <TouchableOpacity onPress={() => router.push('/auth/register')}>
-              <ThemedText style={styles.footerLink}>Sign Up</ThemedText>
+            <TouchableOpacity 
+              onPress={() => router.push('/auth/forgot-password')}
+              style={styles.forgotPassword}
+            >
+              <ThemedText style={styles.forgotPasswordText}>Forgot Password?</ThemedText>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, isLoading && styles.buttonDisabled]}
+              onPress={handleLogin}
+              disabled={isLoading}
+            >
+              <ThemedText style={styles.buttonText}>
+                {isLoading ? 'Signing in...' : 'Sign In'}
+              </ThemedText>
+            </TouchableOpacity>
+
+            <View style={styles.footer}>
+              <ThemedText style={styles.footerText}>Don't have an account? </ThemedText>
+              <TouchableOpacity onPress={() => router.push('/auth/register')}>
+                <ThemedText style={styles.footerLink}>Sign Up</ThemedText>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </LinearGradient>
-    </KeyboardAvoidingView>
+        </LinearGradient>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
@@ -103,9 +110,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  keyboardView: {
+    flex: 1,
+  },
   gradient: {
     flex: 1,
-    padding: 20,
+    paddingTop: 20,
   },
   header: {
     alignItems: 'center',
