@@ -6,46 +6,58 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors, Typography } from '@/constants/Design';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: Colors.primary,
           headerShown: false,
           tabBarButton: HapticTab,
           tabBarBackground: TabBarBackground,
           tabBarStyle: Platform.select({
             ios: {
               position: 'absolute',
+              backgroundColor: Colors.background,
+              borderTopWidth: 0,
+              elevation: 0,
+              height: 60,
+              paddingBottom: 10,
             },
-            default: {},
+            default: {
+              backgroundColor: Colors.background,
+              borderTopWidth: 0,
+              elevation: 0,
+              height: 60,
+              paddingBottom: 10,
+            },
           }),
+          tabBarLabelStyle: {
+            fontFamily: Typography.secondary,
+            fontSize: 12,
+          }
         }}>
         <Tabs.Screen
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+            tabBarIcon: ({ color }) => <IconSymbol size={24} name="house.fill" color={color} />,
           }}
         />
         <Tabs.Screen
           name="scan"
           options={{
             title: 'Scan',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="camera.viewfinder" color={color} />,
+            tabBarIcon: ({ color }) => <IconSymbol size={24} name="camera.viewfinder" color={color} />,
           }}
         />
         <Tabs.Screen
           name="environment"
           options={{
             title: 'Environment',
-            tabBarIcon: ({ color }) => <IconSymbol size={28} name="leaf.circle.fill" color={color} />,
+            tabBarIcon: ({ color }) => <IconSymbol size={24} name="leaf.circle.fill" color={color} />,
           }}
         />
       </Tabs>

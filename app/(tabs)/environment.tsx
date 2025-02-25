@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, ScrollView, View, useWindowDimensions, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { LineChart } from 'react-native-chart-kit';
@@ -6,8 +6,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Colors, Typography } from '@/constants/Design';
 
 function EnvironmentCard({ title, value, icon, unit }: { 
   title: string; 
@@ -17,7 +16,7 @@ function EnvironmentCard({ title, value, icon, unit }: {
 }) {
   return (
     <ThemedView style={styles.envItem}>
-      <IconSymbol name={icon as any} size={24} color="#4A6741" />
+      <IconSymbol name={icon as any} size={24} color={Colors.primary} />
       <View style={styles.envValueContainer}>
         <ThemedText style={styles.envValue}>{value}</ThemedText>
         <ThemedText style={styles.envUnit}>{unit}</ThemedText>
@@ -28,130 +27,57 @@ function EnvironmentCard({ title, value, icon, unit }: {
 }
 
 export default function EnvironmentScreen() {
-  const colorScheme = useColorScheme();
   const { width } = useWindowDimensions();
   const [refreshing, setRefreshing] = useState(false);
-  const [weatherData, setWeatherData] = useState({
-    temperature: '24',
-    humidity: '65',
-    rainfall: '0.5',
-    uvIndex: '6',
-    windSpeed: '12',
-    soilMoisture: '45'
-  });
-
-  // Mock data for the chart
-  const weeklyData = {
-    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    datasets: [
-      {
-        data: [22, 24, 23, 25, 24, 23, 24],
-        color: (opacity = 1) => `rgba(74, 103, 65, ${opacity})`,
-        strokeWidth: 2
-      }
-    ]
-  };
-
-  const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
-    // TODO: Fetch real weather data here
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 1500);
-  }, []);
 
   return (
     <ScrollView 
-      style={[styles.container, { backgroundColor: Colors[colorScheme ?? 'light'].background }]}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      style={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={() => {}} />}
     >
-      {/* Header Section */}
       <LinearGradient
-        colors={['#4A6741', '#2D4D1E']}
+        colors={[Colors.primary, Colors.primary]}
         style={styles.header}
       >
         <ThemedText style={styles.headerTitle}>Environmental Data</ThemedText>
         <ThemedText style={styles.headerSubtitle}>Real-time conditions for your crops</ThemedText>
       </LinearGradient>
 
-      {/* Current Conditions */}
-      <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle}>Current Conditions</ThemedText>
-        <View style={styles.envGrid}>
-          <EnvironmentCard 
-            title="Temperature" 
-            value={weatherData.temperature} 
-            icon="thermometer" 
-            unit="°C"
-          />
-          <EnvironmentCard 
-            title="Humidity" 
-            value={weatherData.humidity} 
-            icon="humidity" 
-            unit="%"
-          />
-          <EnvironmentCard 
-            title="Rainfall" 
-            value={weatherData.rainfall} 
-            icon="cloud.rain.fill" 
-            unit="mm"
-          />
-          <EnvironmentCard 
-            title="UV Index" 
-            value={weatherData.uvIndex} 
-            icon="sun.max.fill" 
-            unit="UV"
-          />
-          <EnvironmentCard 
-            title="Wind Speed" 
-            value={weatherData.windSpeed} 
-            icon="wind" 
-            unit="km/h"
-          />
-          <EnvironmentCard 
-            title="Soil Moisture" 
-            value={weatherData.soilMoisture} 
-            icon="drop.fill" 
-            unit="%"
-          />
+      <View style={styles.content}>
+        <View style={styles.section}>
+          <ThemedText style={styles.sectionTitle}>Current Conditions</ThemedText>
+          <View style={styles.envGrid}>
+            <EnvironmentCard title="Temperature" value="24" icon="thermometer" unit="°C" />
+            <EnvironmentCard title="Humidity" value="65" icon="humidity" unit="%" />
+            <EnvironmentCard title="UV Index" value="6" icon="sun.max" unit="" />
+            <EnvironmentCard title="Wind Speed" value="12" icon="wind" unit="km/h" />
+          </View>
         </View>
-      </View>
 
-      {/* Weekly Temperature Trend */}
-      <View style={styles.section}>
-        <ThemedText style={styles.sectionTitle}>Weekly Temperature Trend</ThemedText>
-        <LineChart
-          data={weeklyData}
-          width={width - 40}
-          height={220}
-          chartConfig={{
-            backgroundColor: '#ffffff',
-            backgroundGradientFrom: '#ffffff',
-            backgroundGradientTo: '#ffffff',
-            decimalPlaces: 1,
-            color: (opacity = 1) => `rgba(74, 103, 65, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-            style: {
-              borderRadius: 16
-            },
-            propsForDots: {
-              r: '6',
-              strokeWidth: '2',
-              stroke: '#4A6741'
-            }
-          }}
-          bezier
-          style={styles.chart}
-        />
-      </View>
-
-      {/* Disease Risk Alert */}
-      <View style={styles.section}>
-        <View style={styles.alertContainer}>
-          <IconSymbol name="exclamationmark.triangle.fill" size={24} color="#FFA500" />
-          <ThemedText style={styles.alertText}>
-            Current conditions indicate moderate risk for fungal diseases. Consider preventive measures.
-          </ThemedText>
+        <View style={[styles.section, styles.chartSection]}>
+          <ThemedText style={styles.sectionTitle}>Weekly Temperature</ThemedText>
+          <LineChart
+            data={{
+              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              datasets: [{
+                data: [22, 24, 23, 25, 24, 23, 24]
+              }]
+            }}
+            width={width - 40}
+            height={220}
+            chartConfig={{
+              backgroundColor: Colors.white,
+              backgroundGradientFrom: Colors.white,
+              backgroundGradientTo: Colors.white,
+              decimalPlaces: 1,
+              color: () => Colors.primary,
+              style: {
+                borderRadius: 16
+              }
+            }}
+            style={styles.chart}
+            bezier
+          />
         </View>
       </View>
     </ScrollView>
@@ -161,29 +87,37 @@ export default function EnvironmentScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.background,
   },
   header: {
     padding: 20,
     paddingTop: 60,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
   },
   headerTitle: {
-    fontSize: 24,
+    fontFamily: Typography.primary,
+    fontSize: 28,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: Colors.white,
   },
   headerSubtitle: {
+    fontFamily: Typography.secondary,
     fontSize: 16,
-    color: '#FFFFFF99',
-    marginTop: 4,
+    color: Colors.white + 'CC',
+    marginTop: 5,
   },
-  section: {
+  content: {
     padding: 20,
   },
+  section: {
+    marginBottom: 24,
+  },
   sectionTitle: {
-    fontSize: 18,
+    fontFamily: Typography.primary,
+    fontSize: 20,
     fontWeight: '600',
+    color: Colors.black,
     marginBottom: 16,
   },
   envGrid: {
@@ -193,16 +127,16 @@ const styles = StyleSheet.create({
   },
   envItem: {
     width: '48%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
     padding: 16,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 16,
     alignItems: 'center',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   envValueContainer: {
     flexDirection: 'row',
@@ -210,35 +144,35 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   envValue: {
+    fontFamily: Typography.primary,
     fontSize: 24,
     fontWeight: '600',
-    color: '#4A6741',
+    color: Colors.primary,
   },
   envUnit: {
+    fontFamily: Typography.secondary,
     fontSize: 14,
-    color: '#666',
+    color: Colors.black,
     marginLeft: 4,
   },
   envTitle: {
+    fontFamily: Typography.secondary,
     fontSize: 14,
-    color: '#666',
+    color: Colors.black,
     textAlign: 'center',
+  },
+  chartSection: {
+    backgroundColor: Colors.white,
+    borderRadius: 20,
+    padding: 16,
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
   chart: {
     marginVertical: 8,
     borderRadius: 16,
-  },
-  alertContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#FFF3E0',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  },
-  alertText: {
-    flex: 1,
-    marginLeft: 12,
-    color: '#FF8C00',
-    fontSize: 14,
   },
 }); 

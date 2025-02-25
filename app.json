@@ -42,6 +42,16 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "fonts": [
+      {
+        "asset": "./assets/fonts/Poppins-Regular.ttf",
+        "family": "Poppins"
+      },
+      {
+        "asset": "./assets/fonts/Oxygen-Regular.ttf",
+        "family": "Oxygen"
+      }
+    ]
   }
 }

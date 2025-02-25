@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Colors, Typography } from '@/constants/Design';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -41,18 +42,18 @@ export default function LoginScreen() {
         style={styles.keyboardView}
       >
         <LinearGradient
-          colors={['#4A6741', '#2D4D1E']}
+          colors={[Colors.primary, Colors.primary]}
           style={styles.gradient}
         >
           <View style={styles.header}>
-            <IconSymbol name="leaf.fill" size={60} color="#FFFFFF" />
+            <IconSymbol name="leaf.fill" size={60} color={Colors.white} />
             <ThemedText style={styles.title}>Welcome Back</ThemedText>
             <ThemedText style={styles.subtitle}>Sign in to continue</ThemedText>
           </View>
 
           <View style={styles.form}>
             <View style={styles.inputContainer}>
-              <IconSymbol name="envelope.fill" size={20} color="#4A6741" />
+              <IconSymbol name="envelope.fill" size={20} color={Colors.primary} />
               <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -65,7 +66,7 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.inputContainer}>
-              <IconSymbol name="lock.fill" size={20} color="#4A6741" />
+              <IconSymbol name="lock.fill" size={20} color={Colors.primary} />
               <TextInput
                 style={styles.input}
                 placeholder="Password"
@@ -123,14 +124,16 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   title: {
+    fontFamily: Typography.primary,
     fontSize: 28,
     fontWeight: '600',
-    color: '#FFFFFF',
+    color: Colors.white,
     marginTop: 20,
   },
   subtitle: {
+    fontFamily: Typography.secondary,
     fontSize: 16,
-    color: '#FFFFFF99',
+    color: Colors.white + '99',
     marginTop: 8,
   },
   form: {
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   button: {
-    backgroundColor: '#4A6741',
+    backgroundColor: Colors.primary,
     padding: 16,
     borderRadius: 10,
     alignItems: 'center',
@@ -175,7 +178,8 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    color: '#FFFFFF',
+    fontFamily: Typography.primary,
+    color: Colors.white,
     fontSize: 16,
     fontWeight: '600',
   },
@@ -185,10 +189,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   footerText: {
-    color: '#666',
+    fontFamily: Typography.secondary,
+    color: Colors.black,
   },
   footerLink: {
-    color: '#4A6741',
+    fontFamily: Typography.primary,
+    color: Colors.primary,
     fontWeight: '600',
   },
 }); 
