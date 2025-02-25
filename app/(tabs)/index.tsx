@@ -8,7 +8,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-type ValidRoutes = '/(tabs)' | '/(tabs)/explore';
+type ValidRoutes = '/(tabs)' | '/(tabs)/explore' | '/(tabs)/scan';
 
 interface QuickActionProps {
   title: string;
@@ -83,21 +83,21 @@ export default function HomeScreen() {
         <ThemedText style={styles.sectionTitle}>Quick Actions</ThemedText>
         <QuickAction 
           title="Scan Plant"
-          icon="house.fill"
-          route="/(tabs)"
+          icon="camera.fill"
+          route="/(tabs)/scan"
           description="Detect diseases using AI"
           color="#4A6741"
         />
         <QuickAction 
           title="View Map"
-          icon="paperplane.fill"
+          icon="map.fill"
           route="/(tabs)/explore"
           description="Check disease spread in your area"
           color="#6B8E23"
         />
         <QuickAction 
           title="Treatment Guide"
-          icon="house.fill"
+          icon="cross.case.fill"
           route="/(tabs)"
           description="View recommended treatments"
           color="#556B2F"
