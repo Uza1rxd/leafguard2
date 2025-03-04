@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, ScrollView, View, useWindowDimensions, RefreshControl } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { LineChart } from 'react-native-chart-kit';
+import { VictoryChart, VictoryLine, VictoryAxis, VictoryTheme } from "victory-native";
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -25,6 +25,20 @@ function EnvironmentCard({ title, value, icon, unit }: {
     </ThemedView>
   );
 }
+
+const chartTheme = {
+  axis: {
+    style: {
+      axis: { stroke: Colors.black },
+      tickLabels: { 
+        fill: Colors.black,
+        fontSize: 12,
+        fontFamily: Typography.secondary
+      },
+      grid: { stroke: "transparent" }
+    }
+  }
+};
 
 export default function EnvironmentScreen() {
   const { width } = useWindowDimensions();
@@ -56,28 +70,36 @@ export default function EnvironmentScreen() {
 
         <View style={[styles.section, styles.chartSection]}>
           <ThemedText style={styles.sectionTitle}>Weekly Temperature</ThemedText>
-          <LineChart
-            data={{
-              labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-              datasets: [{
-                data: [22, 24, 23, 25, 24, 23, 24]
-              }]
-            }}
-            width={width - 40}
-            height={220}
-            chartConfig={{
-              backgroundColor: Colors.white,
-              backgroundGradientFrom: Colors.white,
-              backgroundGradientTo: Colors.white,
-              decimalPlaces: 1,
-              color: () => Colors.primary,
-              style: {
-                borderRadius: 16
-              }
-            }}
-            style={styles.chart}
-            bezier
-          />
+          <VictoryChart
+            theme={VictoryTheme.material}
+            height={250}
+            padding={{ top: 20, bottom: 40, left: 40, right: 20 }}
+          >
+            <VictoryLine
+              style={{
+                data: { stroke: Colors.primary, strokeWidth: 2 },
+              }}
+              data={[
+                { x: 'Mon', y: 22 },
+                { x: 'Tue', y: 24 },
+                { x: 'Wed', y: 23 },
+                { x: 'Thu', y: 25 },
+                { x: 'Fri', y: 24 },
+                { x: 'Sat', y: 23 },
+                { x: 'Sun', y: 24 },
+              ]}
+            />
+            <VictoryAxis
+              dependentAxis
+              tickFormat={(t: number) => `${t}°C`}
+            />
+            <VictoryAxis
+              style={{
+                axis: { stroke: Colors.black },
+                tickLabels: { fill: Colors.black }
+              }}
+            />
+          </VictoryChart>
         </View>
       </View>
     </ScrollView>

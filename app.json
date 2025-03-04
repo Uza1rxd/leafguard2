@@ -9,13 +9,25 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app needs access to location to show disease spread in your area.",
+        "NSLocationAlwaysUsageDescription": "This app needs access to location to show disease spread in your area."
+      }
     },
     "android": {
+      "package": "com.leafguard.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -38,20 +50,27 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera to detect plant diseases."
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(PRODUCT_NAME) to use your location to show disease spread in your area."
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true
     },
-    "fonts": [
-      {
-        "asset": "./assets/fonts/Poppins-Regular.ttf",
-        "family": "Poppins"
-      },
-      {
-        "asset": "./assets/fonts/Oxygen-Regular.ttf",
-        "family": "Oxygen"
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
       }
-    ]
+    },
+    "developmentClient": {
+      "silentLaunch": true
+    }
   }
 }

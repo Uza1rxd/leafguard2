@@ -60,6 +60,20 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => <IconSymbol size={24} name="leaf.circle.fill" color={color} />,
           }}
         />
+        <Tabs.Screen
+          name="trends"
+          options={{
+            title: 'Trends',
+            tabBarIcon: ({ color }) => <IconSymbol size={24} name="chart.bar.fill" color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="treatments"
+          options={{
+            title: 'Treatments',
+            tabBarIcon: ({ color }) => <IconSymbol size={24} name="cross.case.fill" color={color} />,
+          }}
+        />
       </Tabs>
     </SafeAreaView>
   );
